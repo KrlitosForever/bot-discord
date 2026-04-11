@@ -6,7 +6,7 @@ services:
 
     build: .
 
-    container_name: discord-welcome-bot
+    container_name: bot-discord
 
     restart: unless-stopped
 
