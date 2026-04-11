@@ -10,4 +10,4 @@ RUN uv pip install --system -r requirements.txt
 
 COPY bot ./bot
 
-CMD ["python", "bot/main.py"]
+CMD ["python", "-m", "bot.main"]

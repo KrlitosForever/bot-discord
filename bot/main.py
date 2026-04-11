@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
-from bot.config import DISCORD_TOKEN, WELCOME_CHANNEL_ID
+import os
+
+from bot.config import DISCORD_TOKEN
 
 intents = discord.Intents.default()
 intents.members = True
@@ -13,15 +15,22 @@ async def on_ready():
     print(f"Bot conectado como {bot.user}")
 
 
-@bot.event
-async def on_member_join(member):
+async def load_cogs():
+    for filename in os.listdir("./bot/cogs"):
+        if filename.endswith(".py") and not filename.startswith("__"):
+            cog = f"bot.cogs.{filename[:-3]}"
+            try:
+                await bot.load_extension(cog)
+                print(f"Cog cargado: {cog}")
+            except Exception as e:
+                print(f"Error cargando {cog}: {e}")
 
-    channel = bot.get_channel(WELCOME_CHANNEL_ID)
 
-    if channel:
-        await channel.send(
-            f"👋 Bienvenido {member.mention} al servidor **{member.guild.name}**!"
-        )
+async def main():
+    async with bot:
+        await load_cogs()
+        await bot.start(DISCORD_TOKEN)
 
 
-bot.run(DISCORD_TOKEN)
+import asyncio
+asyncio.run(main())
