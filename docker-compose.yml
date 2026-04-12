@@ -4,7 +4,7 @@ services:
 
     build: .
 
-    container_name: bot-discord-v4
+    container_name: bot-discord-v5
 
     restart: unless-stopped
 
